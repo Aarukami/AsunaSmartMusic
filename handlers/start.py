@@ -10,8 +10,8 @@ START_TIME = datetime.utcnow()
 START_TIME_ISO = START_TIME.replace(microsecond=0).isoformat()
 TIME_DURATION_UNITS = (
     ("week", 60 * 60 * 24 * 7),
-    ("day", 60 * 60 * 24),
-    ("hour", 60 * 60),
+    ("day", 60 ** 2 * 24),
+    ("hour", 60 ** 2),
     ("min", 60),
     ("sec", 1),
 )

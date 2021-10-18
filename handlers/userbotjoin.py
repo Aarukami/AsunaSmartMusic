@@ -54,9 +54,9 @@ async def rem(USER, message):
         await USER.leave_chat(message.chat.id)
     except:
         await message.reply_text(
-            f"<b>Users cannot leave your group! Probably waiting for floodwaits."
-            "\n\nOr manually remove me from your Group</b>",
+            '<b>Users cannot leave your group! Probably waiting for floodwaits.\n\nOr manually remove me from your Group</b>'
         )
+
         return
 
     
