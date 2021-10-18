@@ -49,8 +49,7 @@ def changeImageSize(maxWidth, maxHeight, image):
     heightRatio = maxHeight / image.size[1]
     newWidth = int(widthRatio * image.size[0])
     newHeight = int(heightRatio * image.size[1])
-    newImage = image.resize((newWidth, newHeight))
-    return newImage
+    return image.resize((newWidth, newHeight))
 
 async def generate_cover(requested_by, title, views, duration, thumbnail):
     async with aiohttp.ClientSession() as session:
@@ -102,9 +101,9 @@ async def hfmm(_, message):
         return
     status = message.text.split(None, 1)[1]
     message.chat.id
-    if status == "ON" or status == "on" or status == "On":
+    if status in ["ON", "on", "On"]:
         lel = await message.reply("`Processing...`")
-        if not message.chat.id in DISABLED_GROUPS:
+        if message.chat.id not in DISABLED_GROUPS:
             await lel.edit("Music Player Already Activated In This Chat")
             return
         DISABLED_GROUPS.remove(message.chat.id)
@@ -112,9 +111,9 @@ async def hfmm(_, message):
             f"Music Player Successfully Enabled For Users In The Chat {message.chat.id}"
         )
 
-    elif status == "OFF" or status == "off" or status == "Off":
+    elif status in ["OFF", "off", "Off"]:
         lel = await message.reply("`Processing...`")
-        
+
         if message.chat.id in DISABLED_GROUPS:
             await lel.edit("Music Player Already turned off In This Chat")
             return
@@ -137,7 +136,7 @@ async def play(_, message: Message):
         await message.reply("`Musicplayer are disabled, tell admin for turn on Musicplayer!`")
         return
     lel = await message.reply("🔄 **Processing...**")
-    
+
     administrators = await get_administrators(message.chat)
     chid = message.chat.id
 
@@ -175,7 +174,7 @@ async def play(_, message: Message):
         await lel.edit(
             f"<i>Hey {user.first_name}, Asuna Smart AI is not in this chat, ask admin to send /play command for first time to add it.</i>")
         return
-    
+
     audio = (message.reply_to_message.audio or message.reply_to_message.voice) if message.reply_to_message else None
     url = get_url(message)
 
@@ -196,17 +195,18 @@ async def play(_, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        text="🚨 Support",
-                        url=f"https://t.me/YBotsSupport"),
+                        text="🚨 Support", url='https://t.me/YBotsSupport'
+                    ),
                     InlineKeyboardButton(
-                        text="Channel 🔊",
-                        url="https://t.me/SpreadNetworks")                
+                        text="Channel 🔊", url="https://t.me/SpreadNetworks"
+                    ),
                 ]
             ]
         )
-        
+
+
         requested_by = message.from_user.first_name
-        await generate_cover(requested_by, title, views, duration, thumbnail)  
+        await generate_cover(requested_by, title, views, duration, thumbnail)
         file_path = await converter.convert(
             (await message.reply_to_message.download(file_name))
             if not path.isfile(path.join("downloads", file_name)) else file_name
@@ -216,7 +216,7 @@ async def play(_, message: Message):
         try:
             results = YoutubeSearch(url, max_results=1).to_dict()
             # print results
-            title = results[0]["title"]       
+            title = results[0]["title"]
             thumbnail = results[0]["thumbnails"][0]
             thumb_name = f'thumb{title}.jpg'
             thumb = requests.get(thumbnail, allow_redirects=True)
@@ -226,52 +226,49 @@ async def play(_, message: Message):
             views = results[0]["views"]
             durl = url
             durl = durl.replace("youtube", "youtubepp")
-            
+
             secmul, dur, dur_arr = 1, 0, duration.split(':')
             for i in range(len(dur_arr)-1, -1, -1):
                 dur += (int(dur_arr[i]) * secmul)
                 secmul *= 60
-                
+
             keyboard = InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
-                            text="🚨 Support",
-                            url=f"https://t.me/YBotsSupport"),
+                            text="🚨 Support", url='https://t.me/YBotsSupport'
+                        ),
                         InlineKeyboardButton(
-                            text="Updates 📡",
-                            url=f"https://t.me/SpreadNetworks"),
+                            text="Updates 📡", url='https://t.me/SpreadNetworks'
+                        ),
                     ],
                     [
-                        InlineKeyboardButton(
-                            text="🎬 YouTube",
-                            url=f"{url}"),
-                        InlineKeyboardButton(
-                            text="Download 📥",
-                            url=f"{durl}")
-                    ]
+                        InlineKeyboardButton(text="🎬 YouTube", url=f"{url}"),
+                        InlineKeyboardButton(text="Download 📥", url=f"{durl}"),
+                    ],
                 ]
             )
+
         except Exception as e:
             title = "NaN"
             thumb_name = "https://telegra.ph/file/c4b7a21a33e9364f87eee.png"
             duration = "NaN"
             views = "NaN"
             keyboard = InlineKeyboardMarkup(
+                [
                     [
-                        [
-                            InlineKeyboardButton(
-                                text="YouTube 🎬",
-                                url=f"https://youtube.com")
-
-                        ]
+                        InlineKeyboardButton(
+                            text="YouTube 🎬", url='https://youtube.com'
+                        )
                     ]
-                )
+                ]
+            )
+
         if (dur / 60) > DURATION_LIMIT:
              await lel.edit(f"❌ Videos longer than {DURATION_LIMIT} minutes aren't allowed to play!")
              return
         requested_by = message.from_user.first_name
-        await generate_cover(requested_by, title, views, duration, thumbnail)     
+        await generate_cover(requested_by, title, views, duration, thumbnail)
         file_path = await converter.convert(youtube.download(url))
     else:
         if len(message.command) < 2:
@@ -299,7 +296,7 @@ async def play(_, message: Message):
             for i in range(len(dur_arr)-1, -1, -1):
                 dur += (int(dur_arr[i]) * secmul)
                 secmul *= 60
-                
+
         except Exception as e:
             await lel.edit(
                 "❌ Song not found.\n\nTry another song or maybe spell it properly."
@@ -308,33 +305,30 @@ async def play(_, message: Message):
             return
 
         keyboard = InlineKeyboardMarkup(
+            [
                 [
-                    [
-                        InlineKeyboardButton(
-                            text="🚨 Support",
-                            url=f"https://t.me/YBotsSupport"),
-                        InlineKeyboardButton(
-                            text="Updates 📡",
-                            url=f"https://t.me/SpreadNetworks"),
-                    ],
-                    [
-                        InlineKeyboardButton(
-                            text="🎬 YouTube",
-                            url=f"{url}"),
-                        InlineKeyboardButton(
-                            text="Download 📥",
-                            url=f"{durl}")
-                    ]
-                ]
-            )
-        
+                    InlineKeyboardButton(
+                        text="🚨 Support", url='https://t.me/YBotsSupport'
+                    ),
+                    InlineKeyboardButton(
+                        text="Updates 📡", url='https://t.me/SpreadNetworks'
+                    ),
+                ],
+                [
+                    InlineKeyboardButton(text="🎬 YouTube", url=f"{url}"),
+                    InlineKeyboardButton(text="Download 📥", url=f"{durl}"),
+                ],
+            ]
+        )
+
+
         if (dur / 60) > DURATION_LIMIT:
              await lel.edit(f"❌ Videos longer than {DURATION_LIMIT} minutes aren't allowed to play!")
              return
         requested_by = message.from_user.first_name
-        await generate_cover(requested_by, title, views, duration, thumbnail)  
+        await generate_cover(requested_by, title, views, duration, thumbnail)
         file_path = await converter.convert(youtube.download(url))
-  
+
     if message.chat.id in callsmusic.pytgcalls.active_calls:
         position = await queues.put(message.chat.id, file=file_path)
         await message.reply_photo(
@@ -343,8 +337,6 @@ async def play(_, message: Message):
         title, duration, message.from_user.mention(), position
         ),
         reply_markup=keyboard)
-        os.remove("final.png")
-        return await lel.delete()
     else:
         callsmusic.pytgcalls.join_group_call(message.chat.id, file_path)
         await message.reply_photo(
@@ -353,5 +345,6 @@ async def play(_, message: Message):
         caption="**🎵 Song:** {}\n**🕒 Duration:** {} min\n**👤 Added By:** {}\n\n**▶️ Now Playing at `{}`...**".format(
         title, duration, message.from_user.mention(), message.chat.title
         ), )
-        os.remove("final.png")
-        return await lel.delete()
+
+    os.remove("final.png")
+    return await lel.delete()
