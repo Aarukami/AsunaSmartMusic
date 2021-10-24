@@ -1,8 +1,9 @@
 <h2 align="centre">Asuna Music Player 🎵</h2>
 
 ### A bot that can play music on telegram group's voice call
+<a href="https://www.codefactor.io/repository/github/zyxdevs/asunasmartmusic"><img src="https://www.codefactor.io/repository/github/zyxdevs/asunasmartmusic/badge" alt="CodeFactor" /></a>
 <p align="center">
-  <img src="https://telegra.ph/file/ad370fb4d879fd29a9489.jpg">
+  <img src="https://telegra.ph/file/ad370fb4d879fd29a9489.jpg"><br>
 </p>
 
 ##
