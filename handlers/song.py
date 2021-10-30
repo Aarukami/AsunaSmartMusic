@@ -50,7 +50,7 @@ def song(client, message):
             secmul *= 60
 
         if (dur / 60) > 15:
-             await pablo.edit("❌ Song longer than 15 minutes aren't allowed to download!")
+             await m.edit("❌ Song longer than 15 minutes aren't allowed to download!")
              return
 
     except Exception as e:
