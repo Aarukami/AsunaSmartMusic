@@ -44,6 +44,15 @@ def song(client, message):
         url_suffix = results[0]["url_suffix"]
         views = results[0]["views"]
 
+        secmul, dur, dur_arr = 1, 0, duration.split(':')
+        for i in range(len(dur_arr)-1, -1, -1):
+            dur += (int(dur_arr[i]) * secmul)
+            secmul *= 60
+
+        if (dur / 60) > 15:
+             await pablo.edit("❌ Song longer than 15 minutes aren't allowed to download!")
+             return
+
     except Exception as e:
         m.edit(
             "✖️ Found Nothing. Sorry.\n\nTry another keywork or maybe spell it properly."
