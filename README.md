@@ -51,7 +51,7 @@
 
 ### Deploy To Heroku</h4>
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/zYxDevs/AsunaSmartMusic)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Aarukami/AsunaSmartMusic)
 
 Use [Repl Link](https://replit.com/@YogaPranata1/PyroStringGen) to get pyrogram string session
 
